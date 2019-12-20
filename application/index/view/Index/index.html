@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>thinkphp stduy</title>
+</head>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+<body>
+    <button id="1">student所有数据展示</button>
+    <button id="2">teacher所有数据展示</button>
+    <button id="3">删除</button>
+    <button id="4">不用数据库的</button>
+    <button id="5">添加</button>
+    <button id="55">teacher添加</button>
+    <button id="6">更新</button>
+    <button id="7">查询</button>
+    <button id="token">token验证</button>
+    <!--     <form action="http://test.com/index.php/index/token/douserLogin" method="post">
+        <input type="number" name="username" placeholder="username">
+        <input type="password" name="password" placeholder="password">
+        <input type="submit"  value="提交">
+    </form> -->
+    <div class="name">
+        <label>用户名:</label>
+        <input type="text" name="username" id="username">
+    </div>
+    <div class="password">
+        <label>密码:</label>
+        <input type="password" name="password" id="password">
+    </div>
+    <div id="errormessage"></div>
+    <button type="button" id="denglubutton">登陆</button>
+    <table border="1" align="center" width="500px">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>age</th>
+        </tr>
+        {volist name="$teacher_all" id="value"}
+        <tr>
+            <th>{$value.id}</th>
+            <th>{$value.name}</th>
+            <th>{$value.age}</th>
+        </tr>
+        {/volist}
+    </table>
+    <script type="text/javascript">
+    //登录
+    $("#denglubutton").click(function() {
+        $.post("http://test.com/index.php/index/token/douserLogin",
+            //发送给后端的数据
+            {
+                "username": $("#username").val(),
+                "password": $("#password").val()
+            },
+            //回调函数
+            function(data) {
+                var token
+                var tokendata = $.parseJSON(data);
+                console.log(tokendata);
+                sessionStorage.setItem('token', tokendata.token)
+            })
+    })
+    //token值验证
+    $('#token').click(function() {
+        $.post("http://test.com/index.php/index/token/tryToken", {
+                "token": sessionStorage.getItem('token'),
+                // "newtime": now
+            },
+            function(data) {
+                console.log(data);
+                t = data.length;
+            }, "json");
+    });
+
+
+
+    //查询所有
+    $('#1').click(function() {
+        $.post("http://test.com/index.php/index/api/student_all", {},
+            function(data) {
+                console.log(data);
+                t = data.length;
+                console.log(t)
+            }, "json");
+    });
+
+    $('#2').click(function() {
+        $.post("http://test.com/index.php/index/api/teacher_all", {},
+            function(data) {
+                console.log(data);
+                t = data.length;
+                console.log(t)
+            }, "json");
+    });
+
+    $('#3').click(function() {
+        $.post("http://test.com/index.php/index/api/student_del", {
+                'id': 477,
+            },
+            function(data) {
+                console.log(data);
+                t = data.length;
+                console.log(t)
+            }, "json");
+    });
+
+    $('#4').click(function() {
+        $.post("http://test.com/index.php/index/api/reg", {
+                'account': "123",
+                'passwd': "123",
+            },
+            function(data) {
+                console.log(data);
+                t = data.length;
+                console.log(t)
+            }, "json");
+    });
+
+    $('#5').click(function() {
+        $.post("http://test.com/index.php/index/api/student_add", {
+                'name': "chenenen",
+                'age': "123",
+            },
+            function(data) {
+                console.log(data);
+                t = data.length;
+                console.log(t)
+            }, "json");
+    });
+
+    $('#55').click(function() {
+        $.post("http://test.com/index.php/index/api/teacher_add", {
+                'name': "teacher",
+                'age': "321",
+            },
+            function(data) {
+                console.log(data);
+                t = data.length;
+                console.log(t)
+            }, "json");
+    });
+
+    $('#6').click(function() {
+        $.post("http://test.com/index.php/index/api/student_upload", {
+                'id': 3,
+                'name': "chenenen",
+                'age': "123",
+            },
+            function(data) {
+                console.log(data);
+                t = data.length;
+                console.log(t)
+            }, "json");
+    });
+
+    $('#7').click(function() {
+        $.post("http://test.com/index.php/index/api/student_find", {
+                'name': 'chenenen',
+            },
+            function(data) {
+                console.log(data);
+                t = data.length;
+                console.log(t)
+            }, "json");
+    });
+    </script>
+</body>
+
+</html>
